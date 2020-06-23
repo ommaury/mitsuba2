@@ -3,8 +3,7 @@ set(MTS_PLUGIN_PREFIX "samplers")
 add_plugin(independent  independent.cpp)
 add_plugin(stratified   stratified.cpp)
 add_plugin(multijitter  multijitter.cpp)
-add_plugin(bose         bose.cpp)
-add_plugin(bush         bush.cpp)
+add_plugin(orthogonal   orthogonal.cpp)
 add_plugin(ldsampler    ldsampler.cpp)
 
 # Register the test directory

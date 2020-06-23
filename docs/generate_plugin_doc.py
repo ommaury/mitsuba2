@@ -50,8 +50,7 @@ SPECTRUM_ORDERING = ['uniform',
 SAMPLER_ORDERING = ['independent',
                     'stratified',
                     'multijitter',
-                    'bose',
-                    'bush',
+                    'orthogonal',
                     'ldsampler']
 
 INTEGRATOR_ORDERING = ['direct',
