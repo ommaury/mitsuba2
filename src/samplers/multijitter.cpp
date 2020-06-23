@@ -9,14 +9,15 @@ NAMESPACE_BEGIN(mitsuba)
 
 .. _sampler-multijitter:
 
-Multijitter sampler (:monosp:`multijitter`)
--------------------------------------------
+Correlated Multi-Jittered sampler (:monosp:`multijitter`)
+---------------------------------------------------------
 
 .. pluginparameters::
 
  * - sample_count
    - |int|
-   - Number of samples per pixel (Default: 4)
+   - Number of samples per pixel. This value might be slightly increased by the plugin to produce a
+     strata grid with an aspect ratio close to one. (Default: 4)
  * - seed
    - |int|
    - Seed offset (Default: 0)
@@ -24,7 +25,37 @@ Multijitter sampler (:monosp:`multijitter`)
    - |bool|
    - Adds additional random jitter withing the substratum (Default: True)
 
-Based on https://graphics.pixar.com/library/MultiJitteredSampling/paper.pdf
+This plugin implements the methods introduced in Pixar's tech memo: `Correlated
+Multi-Jittered sampling <https://graphics.pixar.com/library/MultiJitteredSampling>`_.
+
+Unlike the previously described stratified sampler, multi-jittered sample patterns produce samples
+that are well stratified in 2D but also well stratified when projected onto one dimension. This can
+greatly reduce the variance of a Monte-Carlo estimator when the function to evaluate exhibits more
+variation along one axis of the sampling domain than the other.
+
+This sampler achieves this by first placing samples in a canonical arrangement that is stratified in
+both 2D and 1D. It then shuffles the x-coordinate of the samples in every columns and the
+y-coordinate in every rows. Fortunately, this process doesn't break the 2D and 1D stratification.
+Kensler's method futher reduces sample clumpiness by correlating the shuffling applied to the
+columns and the rows.
+
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/render/sampler_independent_16spp.jpg
+   :caption: Independent sampler - 16 samples per pixel
+.. subfigure:: ../../resources/data/docs/images/render/sampler_multijitter_16spp.jpg
+   :caption: Correlated Multi-Jittered sampler - 16 samples per pixel
+.. subfigend::
+   :label: fig-multijitter-renders
+
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/sampler/multijitter_1024_samples.svg
+   :caption: 1024 samples projected onto the first two dimensions.
+.. subfigure:: ../../resources/data/docs/images/sampler/multijitter_64_samples_and_proj.svg
+   :caption: 64 samples projected onto the first two dimensions and their projection on both 1D axis
+             (top and right plot). As expected, the samples are well stratified both in 2D and 1D.
+.. subfigend::
+   :label: fig-multijitter-pattern
+
  */
 
 template <typename Float, typename Spectrum>
@@ -167,5 +198,5 @@ private:
 };
 
 MTS_IMPLEMENT_CLASS_VARIANT(MultijitterSampler, Sampler)
-MTS_EXPORT_PLUGIN(MultijitterSampler, "Multijitter Sampler");
+MTS_EXPORT_PLUGIN(MultijitterSampler, "Correlated Multi-Jittered Sampler");
 NAMESPACE_END(mitsuba)

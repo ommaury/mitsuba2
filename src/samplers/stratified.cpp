@@ -16,10 +16,8 @@ Stratified sampler (:monosp:`stratified`)
 
  * - sample_count
    - |int|
-   - Number of samples per pixel (Default: 4)
- * - dimension
-   - |int|
-   - Effective dimension, up to which stratified samples are provided. (Default: 4)
+   - Number of samples per pixel. This number should be the square of a power of two (e.g. 4,
+     16, 64, 256, 1024) (Default: 4)
  * - seed
    - |int|
    - Seed offset (Default: 0)
@@ -29,8 +27,27 @@ Stratified sampler (:monosp:`stratified`)
 
 The stratified sample generator divides the domain into a discrete number of strata and produces
 a sample within each one of them. This generally leads to less sample clumping when compared to
-the independent sampler, as well as better convergence. Due to internal storage costs, stratified
-samples are only provided up to a certain dimension, after which independent sampling takes over.
+the independent sampler, as well as better convergence.
+
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/render/sampler_independent_16spp.jpg
+   :caption: Independent sampler - 16 samples per pixel
+.. subfigure:: ../../resources/data/docs/images/render/sampler_stratified_16spp.jpg
+   :caption: Stratified sampler - 16 samples per pixel
+.. subfigend::
+   :label: fig-stratified-renders
+
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/sampler/stratified_1024_samples.svg
+   :caption: 1024 samples projected onto the first two dimensions which are well distributed
+             if we compare to the :monosp:`independent` sampler.
+.. subfigure:: ../../resources/data/docs/images/sampler/stratified_64_samples_and_proj.svg
+   :caption: 64 samples projected in 2D and on both 1D axis (top and right plot). Every strata
+             contains a single sample creating a good distribution when projected in 2D. Projections
+             on both 1D axis still exhibit sample clumping which will result in higher variance, for
+             instance when sampling a thin streched rectangular area light.
+.. subfigend::
+   :label: fig-stratified-pattern
 
  */
 

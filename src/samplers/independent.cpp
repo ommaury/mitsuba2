@@ -28,10 +28,18 @@ by Melissa O’Neill.
 
 This is the most basic sample generator; because no precautions are taken to avoid
 sample clumping, images produced using this plugin will usually take longer to converge.
-In theory, this sampler is initialized using a deterministic procedure, which means
-that subsequent runs of Mitsuba should create the same image. In practice, when
-rendering with multiple threads and/or machines, this is not true anymore, since the
-ordering of samples is influenced by the operating system scheduler.
+this sampler is initialized using a deterministic procedure, which means that subsequent runs
+of Mitsuba should create the same image.
+
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/sampler/independent_1024_samples.svg
+   :caption: 1024 samples projected onto the first two dimensions.
+.. subfigure:: ../../resources/data/docs/images/sampler/independent_64_samples_and_proj.svg
+   :caption: 64 samples projected onto the first two dimensions and their
+             projection on both 1D axis (top and right plot). Both the 2D and 1D projections
+             exhibit sample clumping which will result in higher variance in the rendered image.
+.. subfigend::
+   :label: fig-independent-pattern
 
  */
 

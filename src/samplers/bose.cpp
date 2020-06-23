@@ -10,7 +10,7 @@ NAMESPACE_BEGIN(mitsuba)
 .. _sampler-bose:
 
 Bose Orthogonal Array sampler (:monosp:`bose`)
--------------------------------------------
+----------------------------------------------
 
 .. pluginparameters::
 
@@ -26,9 +26,24 @@ Bose Orthogonal Array sampler (:monosp:`bose`)
 
 Based on https://cs.dartmouth.edu/~wjarosz/publications/jarosz19orthogonal.pdf
 
- */
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/render/sampler_independent_25spp.jpg
+   :caption: Independent sampler - 25 samples per pixel
+.. subfigure:: ../../resources/data/docs/images/render/sampler_bose_25spp.jpg
+   :caption: Orthogonal Array Bose sampler - 25 samples per pixel
+.. subfigend::
+   :label: fig-bose-renders
 
-#define USE_KENSLER_PERMUTE
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/sampler/bose_1369_samples.svg
+   :caption: 1369 samples projected onto the first two dimensions.
+.. subfigure:: ../../resources/data/docs/images/sampler/bose_49_samples_and_proj.svg
+   :caption: A projection of the first 49 samples onto the first two dimensions and their
+             projection on both 1D axis (top and right plot).
+.. subfigend::
+   :label: fig-bose-pattern
+
+ */
 
 template <typename Float, typename Spectrum>
 class BoseSampler final : public RandomSampler<Float, Spectrum> {
@@ -73,7 +88,7 @@ public:
         sampler->m_samples_per_wavefront = m_samples_per_wavefront;
         sampler->m_wavefront_count       = m_wavefront_count;
         sampler->m_base_seed             = m_base_seed;
-        sampler->m_dimension_index       = 0u;
+        sampler->m_dimension_index       = 0;
         sampler->m_wavefront_index       = -1;
         return sampler;
     }

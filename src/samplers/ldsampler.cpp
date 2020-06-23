@@ -11,16 +11,37 @@ NAMESPACE_BEGIN(mitsuba)
 .. _sampler-ldsampler:
 
 Low discrepancy sampler (:monosp:`ldsampler`)
--------------------------------------------
+---------------------------------------------
 
-This plugin implements a simple hybrid sampler that combines aspects of a Quasi-Monte Carlo
-sequence with a pseudorandom number generator based on a technique proposed by Kollig and
-Keller \cite{Kollig2002Efficient}. It is a good and fast general-purpose sample generator and
-therefore chosen as the default option in Mitsuba. Some of the QMC samplers in the following pages
-can generate even better distributed samples, but this comes at a higher cost in terms of
-performance.
+This plugin implements a simple hybrid sampler that combines aspects of a Quasi-Monte Carlo sequence
+with a pseudorandom number generator based on a technique proposed by Kollig and Keller
+:cite:`Kollig2002Efficient`. It is a good and fast general-purpose sample generator. There exists
+other QMC samplers that can generate even better distributed samples, but this comes at a higher
+cost in terms of performance. This plugin is based on Mitsuba 1's default sampler (also called
+:monosp:`ldsampler`).
 
-Based on https://github.com/mitsuba-renderer/mitsuba/blob/master/src/samplers/ldsampler.cpp
+Roughly, the idea of this sampler is that all of the individual 2D sample dimensions are first
+filled using the same (0, 2)-sequence, which is then randomly scrambled and permuted using a
+shuffle network. The name of this plugin stems from the fact that (0, 2) sequences minimize the
+so-called star disrepancy, which is a quality criterion on their spatial distribution.
+
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/render/sampler_independent_16spp.jpg
+   :caption: Independent sampler - 16 samples per pixel
+.. subfigure:: ../../resources/data/docs/images/render/sampler_ldsampler_16spp.jpg
+   :caption: Low-discrepancy sampler - 16 samples per pixel
+.. subfigend::
+   :label: fig-ldsampler-renders
+
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/sampler/ldsampler_1024_samples.svg
+   :caption: 1024 samples projected onto the first two dimensions.
+.. subfigure:: ../../resources/data/docs/images/sampler/ldsampler_64_samples_and_proj.svg
+   :caption: A projection of the first 64 samples onto the first two dimensions and their
+             projection on both 1D axis (top and right plot). The 1D stratification is perfect as
+             this sampler doesn't add additional jittering.
+.. subfigend::
+   :label: fig-ldsampler-pattern
 
  */
 
@@ -56,7 +77,7 @@ public:
         sampler->m_samples_per_wavefront = m_samples_per_wavefront;
         sampler->m_wavefront_count       = m_wavefront_count;
         sampler->m_base_seed             = m_base_seed;
-        sampler->m_dimension_index       = 0u;
+        sampler->m_dimension_index       = 0;
         sampler->m_wavefront_index       = -1;
         return sampler;
     }
@@ -65,7 +86,7 @@ public:
         ScopedPhase scope_phase(ProfilerPhase::SamplerSeed);
         Base::seed(seed_value);
 
-        m_dimension_index = 0u;
+        m_dimension_index = 0;
         m_wavefront_index = -1;
 
         if constexpr (is_dynamic_array_v<Float>) {

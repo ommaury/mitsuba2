@@ -10,7 +10,7 @@ NAMESPACE_BEGIN(mitsuba)
 .. _sampler-bush:
 
 Bush Orthogonal Array sampler (:monosp:`bush`)
--------------------------------------------
+----------------------------------------------
 
 .. pluginparameters::
 
@@ -20,11 +20,31 @@ Bush Orthogonal Array sampler (:monosp:`bush`)
  * - seed
    - |int|
    - Seed offset (Default: 0)
+ * - strength
+   - |int|
+   - Orthogonal array's strength (Default: 2)
  * - jitter
    - |bool|
    - Adds additional random jitter withing the substratum (Default: True)
 
 Based on https://cs.dartmouth.edu/~wjarosz/publications/jarosz19orthogonal.pdf
+
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/render/sampler_independent_25spp.jpg
+   :caption: Independent sampler - 25 samples per pixel
+.. subfigure:: ../../resources/data/docs/images/render/sampler_bush_25spp.jpg
+   :caption: Orthogonal Array Bush sampler - 25 samples per pixel
+.. subfigend::
+   :label: fig-bush-renders
+
+.. subfigstart::
+.. subfigure:: ../../resources/data/docs/images/sampler/bush_1369_samples.svg
+   :caption: 1369 samples projected onto the first two dimensions.
+.. subfigure:: ../../resources/data/docs/images/sampler/bush_49_samples_and_proj.svg
+   :caption: A projection of the first 49 samples onto the first two dimensions and their
+             projection on both 1D axis (top and right plot).
+.. subfigend::
+   :label: fig-bush-pattern
 
  */
 
